@@ -1,4 +1,4 @@
 export interface IRepository<T> {
   addItem(item: T): number;
-  getAllItems(): T[];
+  getAllItems(page?: string, pageSize?: string): { data: T[]; total: number };
 }

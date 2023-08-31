@@ -9,8 +9,8 @@ export class AccountService {
     return this.repository.addItem(item);
   }
 
-  getAllAccounts(): Account[] {
-    return this.repository.getAllItems();
+  getAllAccounts(page?: string, pageSize?: string): { data: Account[]; total: number } {
+    return this.repository.getAllItems(page, pageSize);
   }
 
   findAccountByAccountNumber(accountNumber: number): Account | undefined {

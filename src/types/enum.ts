@@ -3,4 +3,5 @@ export enum AccountType {
   CURRENT = "CURRENT",
   FIXED = "FIXED",
   CREDIT = "CREDIT",
+  UNIVERSAL = "UNIVERSAL",
 }

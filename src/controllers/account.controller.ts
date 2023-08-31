@@ -24,7 +24,7 @@ export class AccountController {
     }
     return res.status(201).json({
       message: "successful",
-      data: {
+      result: {
         accountNumber: account.accountNumber,
         accountName: account.accountName,
         accountType: account.accountType,
@@ -33,7 +33,7 @@ export class AccountController {
     });
   }
 
-  getAccount(req: Request, res: Response, next: NextFunction) {
+  getAccountDetailsByAccountNumber(req: Request, res: Response, next: NextFunction) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return next(formatValidationError(errors.array()));
@@ -49,7 +49,29 @@ export class AccountController {
     }
     return res.status(200).json({
       message: "successful",
-      data: account,
+      result: account,
+    });
+  }
+
+  getAllAccounts(req: Request, res: Response, next: NextFunction) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(formatValidationError(errors.array()));
+    }
+
+    const page = req.query.page as string;
+    const pageSize = req.query.pageSize as string;
+
+    const accounts = accountService.getAllAccounts(page, pageSize);
+
+    if (!accounts.data.length) {
+      return res.status(404).json({
+        message: "No accounts found",
+      });
+    }
+    return res.status(200).json({
+      message: "successful",
+      result: accounts,
     });
   }
 }

@@ -1,4 +1,4 @@
-import { body, param } from "express-validator";
+import { body, param, query } from "express-validator";
 import { AccountType } from "../types/enum";
 import { isFuture, isValid, parse } from "date-fns";
 
@@ -44,5 +44,18 @@ export const getAccountValidation = () => {
       .withMessage("Account number must be a number")
       .isLength({ min: 10, max: 10 })
       .withMessage("Account number must be 10 digits"),
+  ];
+};
+
+export const getAllAccountsValidation = () => {
+  return [
+    query("page", "Please enter a valid page number")
+      .optional()
+      .isNumeric()
+      .withMessage("Page number must be a number"),
+    query("pageSize", "Please enter a valid page size")
+      .optional()
+      .isNumeric()
+      .withMessage("Page size must be a number"),
   ];
 };
