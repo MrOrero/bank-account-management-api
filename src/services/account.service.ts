@@ -13,9 +13,9 @@ export class AccountService {
     return this.repository.getAllItems();
   }
 
-  findAccountByName(accountName: string): Account | undefined {
+  findAccountByAccountNumber(accountNumber: number): Account | undefined {
     if (this.repository instanceof AccountRepository) {
-      return this.repository.findAccountByName(accountName);
+      return this.repository.findAccountByNumber(accountNumber);
     }
     return undefined;
   }

@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 import { AccountType } from "../types/enum";
 import { isFuture, isValid, parse } from "date-fns";
 
@@ -34,5 +34,15 @@ export const addAccountValidation = () => {
     body("initialBalance", "Please enter a Initial Balance")
       .isFloat({ min: 0 })
       .withMessage("Initial balance must be a non-negative number"),
+  ];
+};
+
+export const getAccountValidation = () => {
+  return [
+    param("accountNumber", "Please enter a valid account number")
+      .isNumeric()
+      .withMessage("Account number must be a number")
+      .isLength({ min: 10, max: 10 })
+      .withMessage("Account number must be 10 digits"),
   ];
 };

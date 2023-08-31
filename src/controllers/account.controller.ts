@@ -7,6 +7,7 @@ import { Request, Response } from "express";
 
 export class AccountController {
   addAccount(req: Request, res: Response, next: NextFunction) {
+    // check for validation errors and return error message if any
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return next(formatValidationError(errors.array()));
@@ -22,13 +23,33 @@ export class AccountController {
       });
     }
     return res.status(201).json({
-      message: "Account created successfully",
+      message: "successful",
       data: {
         accountNumber: account.accountNumber,
         accountName: account.accountName,
         accountType: account.accountType,
         initialBalance: account.initialBalance,
       },
+    });
+  }
+
+  getAccount(req: Request, res: Response, next: NextFunction) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return next(formatValidationError(errors.array()));
+    }
+    const accountNumber = Number(req.params.accountNumber);
+
+    const account = accountService.findAccountByAccountNumber(accountNumber);
+    if (!account) {
+      return res.status(404).json({
+        message: "Account not found",
+        details: [`Account with account number ${accountNumber} not found`],
+      });
+    }
+    return res.status(200).json({
+      message: "successful",
+      data: account,
     });
   }
 }
