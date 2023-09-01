@@ -34,9 +34,9 @@ You can check the Node.js and npm versions by running the following commands.
 
 - Install project dependencies by running `npm install`.
 
-- Before compilation you should install typescript globally using `npm install typescript`
+- Before compilation you should install typescript globally using `npm install typescript -g`
 
-- Then to compile kindly use `npm build`
+- Then to compile kindly use `npm run build`
 
 - Start the server with `npm start`
 
