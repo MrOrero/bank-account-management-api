@@ -15,22 +15,25 @@ export class AccountController {
     const { accountName, dateOfBirth, accountType, initialBalance } = req.body;
     const account = new Account(accountName, dateOfBirth, accountType, initialBalance);
 
-    const addedAccountIndex = accountService.createAccount(account);
+    try {
+      accountService.createAccount(account);
 
-    if (!addedAccountIndex) {
-      return res.status(500).json({
-        message: "Internal Server Error",
+      return res.status(201).json({
+        message: "successful",
+        result: {
+          accountNumber: account.accountNumber,
+          accountName: account.accountName,
+          accountType: account.accountType,
+          initialBalance: account.initialBalance,
+        },
       });
+    } catch (error: any) {
+      if (!error.statusCode) {
+        error.statusCode = 500;
+      }
+      next(error);
+      return error;
     }
-    return res.status(201).json({
-      message: "successful",
-      result: {
-        accountNumber: account.accountNumber,
-        accountName: account.accountName,
-        accountType: account.accountType,
-        initialBalance: account.initialBalance,
-      },
-    });
   }
 
   getAccountDetailsByAccountNumber(req: Request, res: Response, next: NextFunction) {
