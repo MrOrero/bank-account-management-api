@@ -43,17 +43,25 @@ export class AccountController {
     }
     const accountNumber = Number(req.params.accountNumber);
 
-    const account = accountService.findAccountByAccountNumber(accountNumber);
-    if (!account) {
-      return res.status(404).json({
-        message: "Account not found",
-        details: [`Account with account number ${accountNumber} not found`],
+    try {
+      const account = accountService.findAccountByAccountNumber(accountNumber);
+      if (!account) {
+        return res.status(404).json({
+          message: "Account not found",
+          details: [`Account with account number ${accountNumber} not found`],
+        });
+      }
+      return res.status(200).json({
+        message: "successful",
+        result: account,
       });
+    } catch (error: any) {
+      if (!error.statusCode) {
+        error.statusCode = 500;
+      }
+      next(error);
+      return error;
     }
-    return res.status(200).json({
-      message: "successful",
-      result: account,
-    });
   }
 
   getAllAccounts(req: Request, res: Response, next: NextFunction) {
@@ -65,16 +73,24 @@ export class AccountController {
     const page = req.query.page as string;
     const pageSize = req.query.pageSize as string;
 
-    const accounts = accountService.getAllAccounts(page, pageSize);
+    try {
+      const accounts = accountService.getAllAccounts(page, pageSize);
 
-    if (!accounts.data.length) {
-      return res.status(404).json({
-        message: "No accounts found",
+      if (!accounts.data.length) {
+        return res.status(404).json({
+          message: "No accounts found",
+        });
+      }
+      return res.status(200).json({
+        message: "successful",
+        result: accounts,
       });
+    } catch (error: any) {
+      if (!error.statusCode) {
+        error.statusCode = 500;
+      }
+      next(error);
+      return error;
     }
-    return res.status(200).json({
-      message: "successful",
-      result: accounts,
-    });
   }
 }
